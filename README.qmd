@@ -1,6 +1,6 @@
 ---
 title: "Activity 4: Data visualization 2: Customizing plots"
-subtitle: Jan. 14th, 2026, Joshua Holt
+subtitle: Jan. 14th, 2026, Joshua Holt and Sam Larralde
 format: 
   pdf: default
 execute:
@@ -492,6 +492,8 @@ Please take a look at the feedback you got on the abalone figure (go back to the
 
 ### Q2.1: Pick an audience for your explanatory graph.
 
+# 2.1) A community member who regularly attends townhalls. Is very involved with local events.
+
 This could be everything from another scientist to a policymaker, a community member, your grandmother, or anyone else. Please write a short explanation of who this person or group of people is.
 
 ------------------------------------------------------------------------
@@ -499,13 +501,22 @@ This could be everything from another scientist to a policymaker, a community me
 ### Q2.2: Remake your original graph from Monday.
 
 ```{r}
+library(ggplot2)
+library(here)
 
+ab_la <- read.csv("abalone_landings.csv")
+ggplot(ab_la, aes(x = Year, y = Abalone_Landings_lbs)) +
+  geom_line(aes(color= Abalone_Species)) +
+  geom_point(aes(color= Abalone_Species))
+ggsave("Abalone_Landings_per_Year.png")
 ```
 This should be as simple as copy and pasting the code you used on Monday (though remember to read in the data!). You'll need to create a new code block below here (remember how to do that?).
 
 ------------------------------------------------------------------------
 
 ### Q2.3: Describe how you would like to modify the figure to make it more effective as an explanatory graph for the audience you chose in Q2.1.
+
+# 2.3) We would like to revise y-axis name, add title, revise legend name, set color palette for species, and take points off
 
 The past two activities have provided a brief sampling of the possibilities of customizing graphs using ggplot. You are welcome to explore other possibilities, too, either on your own or by talking with the teaching team.
 
@@ -516,10 +527,32 @@ The past two activities have provided a brief sampling of the possibilities of c
 
 Use what you have learned and make a Really Nice Graph for your audience! Go wild with making it pretty.
 
+```{r}
+library(ggplot2)
+library(here)
+
+ab_la <- read.csv("abalone_landings.csv")
+ggplot(ab_la, aes(x = Year, y = Abalone_Landings_lbs, color = Abalone_Species)) +
+  geom_line()+
+  scale_color_manual(values = c("Black" ="black",
+                                "While"="grey",
+                                "Red"="red",
+                                "Green"="green",
+                                "Pink"="pink"))+
+  labs(x = "Year",
+     y = "Abalone Landings in Lbs",
+     title = "Abalone Landing Decline Over Time",
+     Abalone_Species = "Abalone Species",
+     color = "Abalone Species") + scale_x_continuous(limits = c(1973,1997)) + theme_classic()
+ggsave("Abalone_Landings_per_Year.png")
+```
+
 
 ### Q2.5: Explain your graph
 
 Write a couple sentences explaining the message you hope your audience will take away from seeing your graph.
+
+# 2.5) We hope that concerned community members recognize the degree of biomass loss in abalone over the years. We also hope that they are able to discern how well the different species fared.
 
 # Wrap up and submit
 
