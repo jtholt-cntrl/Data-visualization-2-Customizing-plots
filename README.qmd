@@ -1,8 +1,8 @@
 ---
 title: "Activity 4: Data visualization 2: Customizing plots"
-subtitle: Jan. 14th, 2026, Calvin Munson
-format: markdown_github
-
+subtitle: Jan. 14th, 2026, Joshua Holt
+format: 
+  pdf: default
 execute:
   warning: false
 ---
@@ -36,7 +36,7 @@ Also, don’t be afraid to use lots of blank lines! It is MUCH nicer for your fu
 First, let's load our packages. You should already have the `here` and `ggplot2` packages installed; read them in from the library in your code. Also install and read in the `palmerpenguins` package, which contains built-in data - you may recognize this from Malin's ggplot lecture!
 
 ```{r setup, warning = FALSE, message = FALSE}
-# install.packages("palmerpenguins")
+install.packages("palmerpenguins")
 library(ggplot2)
 library(here)
 library(palmerpenguins)
@@ -73,6 +73,7 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
 
 Does it look like there is a relationship between these variables? Describe the relationship.
 
+# 1.1) It doesn't look like there is a clear relationship between these variables. The data seems to be clustered around 2 central points one having more depth and being more dense. 
 ------------------------------------------------------------------------
 
 ### Q1.2: Color the points by species of penguin
@@ -85,8 +86,11 @@ To address the second part of our question:
 
 2.  Interpret the graph by describing the relationship you see and if this new visualization changes your answer to Q1.1.
 
-```{r}
+# 1.2) This time, there seems to linear positive relationship between bill length and bill depth. This is made more obvious with the clear distinction between species, so now we can tell that the data follows the same trends for all three species. This was not present before, making the message from the data unclear.
 
+```{r}
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point(aes(color = species))
 ```
 
 The take-home message here is to be thorough with how you look at your data! If you ignore certain variables, you might miss important patterns (this is also crucial when deciding what statistical models we should run on our data, but more on that in a few weeks!).
@@ -104,11 +108,11 @@ Monday's Seaside Chat provided some practice with modifying the scales of the co
 ### Q1.3: Add your favorite colors to your graph
 
 Using your new color skills, modify the `scale_color_*` code below to include a new color selection!
-
+# 1.3) Changed color group drom Dark2 to Set3
 ```{r}
 ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(aes(color = species)) +
-  scale_color_brewer(palette = "Dark2")
+  scale_color_brewer(palette = "Set3")
 ```
 
 Let's make the shape of the points vary by species to even more clearly separate the points by species:
@@ -230,8 +234,9 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
 
 Let's say we want our limits to include 0, so we manually specify 0 as the minimum, but we want to use ggplot's default for the maximum y limit. Go to the built-in help page of `scale_y_continuous()` and figure out what to replace the \* with in `limits = c(0, *)`. Then modify that code below.
 
+# 1.4) Replaced \* with NA so I ended with `limits = c(0,NA)
 ```{r}
-?scale_y_continuous()
+scale_y_continuous(limits = c(0,NA))
 ```
 
 ------------------------------------------------------------------------
@@ -280,6 +285,24 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
 
 The legend title is currently not capitalized - add to the `labs()` function to change the title of the correct aesthetic(s) to make the legend title read "Species". (You may encounter an unexpected result - try and figure out what you can do to make it appear how you want! Hint: how many different aesthetics is `species` currently mapped to?).
 
+# 1.5) We added: shape = "Species", fill = "Species", color = "Species"
+
+```{r}
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point(aes(fill = species,
+                 shape = species),
+             size = 2.5) +
+  geom_smooth(method = "lm",
+              aes(color = species)) +
+  scale_fill_brewer(palette = "Dark2") +
+  scale_color_brewer(palette = "Dark2") +
+  scale_shape_manual(values = c(21, 22, 24)) +
+  labs(x = "Bill length (mm)",
+       y = "Bill depth (mm)",
+       shape = "Species",
+       fill = "Species",
+color = "Species")
+```
 ## Themes
 
 This is looking decent, but there's still more we can do. ggplot provides us with LOTS of flexibility in how the non-data-related components of the graph look (think the font size, background color, axis grid lines, etc.). To modify this, we add **themes** using the `theme()` function.
@@ -323,6 +346,12 @@ Depending on what the element is, you use a different `element_*()` function:
 -   `element_blank()`: Hides or removes an element entirely (e.g., `panel.grid.major = element_blank()`).
 
 ### Q1.6: What font faces are available?
+
+# 1.6) "plain", "italic", "bold", "bold.italic"
+
+```{r}
+?element_text()
+```
 
 Go to the `element_text()` help page: under "Usage" you will see what arguments each element function can modify, and if you scroll down to "Arguments," you can read more about the specifics of each element you can modify.
 
@@ -469,6 +498,9 @@ This could be everything from another scientist to a policymaker, a community me
 
 ### Q2.2: Remake your original graph from Monday.
 
+```{r}
+
+```
 This should be as simple as copy and pasting the code you used on Monday (though remember to read in the data!). You'll need to create a new code block below here (remember how to do that?).
 
 ------------------------------------------------------------------------
